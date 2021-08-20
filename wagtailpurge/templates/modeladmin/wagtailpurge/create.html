@@ -1,0 +1,10 @@
+{% extends "modeladmin/create.html" %}
+{% load i18n wagtailadmin_tags modeladmin_tags %}
+
+{% block form_actions %}
+    <div class="dropdown dropup dropdown-button match-width">
+        <button type="submit" class="button action-save button-longrunning" data-clicked-text="{% trans 'Submitting…' %}">
+            {% icon name="spinner" %}<em>{% trans 'Submit' %}</em>
+        </button>
+    </div>
+{% endblock %}

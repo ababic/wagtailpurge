@@ -20,6 +20,8 @@ on:
 jobs:
   test-current:
     name: Current Python, Wagtail + Django
+    env:
+      DJANGO_SETTINGS_MODULE: wagtailpurge.tests.settings
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -43,6 +45,8 @@ jobs:
 
   test-legacy:
     name: Older versions of Python, Wagtail + Django
+    env:
+      DJANGO_SETTINGS_MODULE: wagtailpurge.tests.settings
     needs: test-current
     runs-on: ubuntu-latest
     strategy:

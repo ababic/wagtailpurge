@@ -37,7 +37,7 @@ jobs:
       - run: flake8
       - run: isort . --check-only --diff
       - run: black . --check --fast
-      - run: python manage.py makemigrations --check --noinput
+      - run: django-admin makemigrations --check --noinput
       - name: Run tests
         run: pytest
 

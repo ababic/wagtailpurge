@@ -60,7 +60,7 @@ class BasePurgeRequest(ClusterableModel, metaclass=PurgeRequestMetaclass):
         editable=False,
     )
     status_updated = models.DateTimeField(null=True, editable=False)
-    duration = models.DurationField(verbose_name="exec. time", null=True, editable=False)
+    duration = models.DurationField(null=True, editable=False)
 
     list_display_extra = ()
     list_filter_extra = ()

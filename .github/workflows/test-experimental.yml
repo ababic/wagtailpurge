@@ -1,0 +1,32 @@
+name: Test against Django/Wagail main branches
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      matrix:
+        include:
+          - django: "git+https://github.com/django/django.git@main#egg=Django"
+            wagtail: Wagtail>=2.14,<2.15
+          - django: Django>=3.2,<3.3
+            wagtail: "git+https://github.com/wagtail/wagtail.git@main#egg=Wagtail"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[test]
+          pip install "${{ matrix.django }}"
+          pip install "${{ matrix.wagtail }}"
+      - name: Run tests
+        run: pytest

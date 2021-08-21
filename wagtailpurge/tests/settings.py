@@ -5,10 +5,23 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ALLOWED_HOSTS = ["*"]
 
 DATABASES = {
-    'default': {
-        'NAME': 'wagtailpurge-test.sqlite',
-        'ENGINE': 'django.db.backends.sqlite3',
+    "default": {
+        "NAME": "wagtailpurge-test.sqlite",
+        "ENGINE": "django.db.backends.sqlite3",
     }
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "default-location",
+    },
+    "secondary": {
+        "BACKEND": "django.core.cache.backends.dummy.DummyCache",
+    },
+    "tertiary": {
+        "BACKEND": "django.core.cache.backends.dummy.DummyCache",
+    },
 }
 
 TEMPLATES = [

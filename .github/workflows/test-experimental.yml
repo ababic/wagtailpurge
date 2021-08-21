@@ -1,4 +1,4 @@
-name: Test against Django/Wagail main branches
+name: "Test (experimental)"
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
 
 jobs:
   test:
+    name: Test against Django/Wagtail main branches
     runs-on: ubuntu-latest
     continue-on-error: true
     strategy:
@@ -16,7 +17,7 @@ jobs:
           - django: Django>=3.2,<3.3
             wagtail: "git+https://github.com/wagtail/wagtail.git@main#egg=Wagtail"
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v2
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -28,5 +29,5 @@ jobs:
           pip install -e .[test]
           pip install "${{ matrix.django }}"
           pip install "${{ matrix.wagtail }}"
-      - name: Run tests
+      - name: Run test suite
         run: pytest

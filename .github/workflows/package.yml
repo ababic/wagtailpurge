@@ -1,0 +1,21 @@
+name: 📦 Package
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  publish_to_pypi:
+    name: Package 🐍 for PyPi
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build
+        if: startsWith(github.ref, 'refs/tags')
+        run: |
+          python -m pip install build --user
+          python -m build --sdist --wheel --outdir dist/ .
+      - name: Publish
+        if: startsWith(github.ref, 'refs/tags')
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}

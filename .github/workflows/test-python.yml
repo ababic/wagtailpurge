@@ -1,0 +1,99 @@
+name: Test
+
+on:
+  push:
+    paths-ignore:
+    - 'docs/**'
+
+# Our test suite should cover:
+# - Compatibility with the most recent versions of Python, Wagtail and Django
+# - at least one test run for older supported version of Python, Wagtail and Django
+# - a test run against Django's git main branch (allowing failures)
+# - a test run against Wagtail's git main branch (allowing failures)
+
+# Current configuration:
+# - python 3.9, django 3.2, wagtail 2.14 (+ linting and other checks)
+# - python 3.9, django.3.2, wagtail main (allow failures)
+# - python 3.9, django main, wagtail 2.14 (allow failures)
+# - python 3.9, django 3.2, wagtail 2.13
+# - python 3.8, django 3.1, wagtail 2.12
+# - python 3.7, django 3.1, wagtail 2.12
+# - python 3.6, django 3.1, wagtail 2.12
+
+jobs:
+  test-current:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[test]
+          pip install "Django>=3.2,<3.3"
+          pip install "Wagtail>=2.14,<2.15"
+      - run: flake8
+      - run: isort --check-only --diff
+      - run: black --check --fast
+      - run: python manage.py makemigrations --check --noinput
+      - name: Run tests
+        run: pytest
+
+  test-legacy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: 3.9
+            wagtail: "Wagtail>=2.14,<2.14"
+          - python: 3.8
+            wagtail: "Wagtail>=2.13,<2.13"
+          - python: 3.7
+            wagtail: "Wagtail>=2.12,<2.13"
+          - python: 3.6
+            wagtail: "Wagtail>=2.12,<2.13"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[test]
+          pip install "Django>=3.1,<3.2"
+          pip install "${{ matrix.wagtail }}"
+      - name: Run tests
+        run: pytest
+
+  test-experimental:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      matrix:
+        include:
+          - django: "git+https://github.com/django/django.git@main#egg=Django"
+            wagtail: Wagtail>=2.14,<2.15
+          - django: Django>=3.2,<3.3
+            wagtail: "git+https://github.com/wagtail/wagtail.git@main#egg=Wagtail"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[test]
+          pip install "${{ matrix.django }}"
+          pip install "${{ matrix.wagtail }}"
+      - name: Run tests
+        run: pytest

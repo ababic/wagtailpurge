@@ -62,6 +62,13 @@ INSTALLED_APPS = (
     "wagtail.contrib.modeladmin",
 )
 
+MIDDLEWARE = [
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+]
+
 ROOT_URLCONF = "wagtailpurge.tests.urls"
 WAGTAIL_SITE_NAME = "Wagtailpurge"
 LOGIN_URL = "wagtailadmin_login"

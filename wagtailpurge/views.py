@@ -36,9 +36,6 @@ class PurgeRequestSubmitView(CreateView):
 
 
 class PurgeRequestEditView(EditView):
-    def get(self, request, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         messages.info(request, _("Purge requests cannot be edited"))
         return redirect(self.index_url, permanent=True)
-
-    def post(self, request, **kwargs):
-        return self.get(request, **kwargs)

@@ -3,12 +3,18 @@ from typing import Iterable, Sequence, Type
 from django.utils.functional import classproperty
 from django.utils.translation import gettext_lazy as _
 
-from wagtail.contrib.modeladmin.helpers import ButtonHelper
+from wagtail.contrib.modeladmin.helpers import ButtonHelper, PermissionHelper
 from wagtail.contrib.modeladmin.options import ModelAdmin, ModelAdminGroup
 
 from .constants import APP_ICON
 from .models import REQUEST_CLASSES
-from .views import PurgeRequestSubmitView
+from .views import PurgeRequestSubmitView, PurgeRequestEditView
+
+
+class PurgeRequestPermissionHelper(PermissionHelper):
+    def user_can_edit_obj(self, user, obj):
+        # Disables the 'edit' button for all users
+        return False
 
 
 class PurgeRequestButtonHelper(ButtonHelper):
@@ -25,6 +31,8 @@ class PurgeRequestModelAdmin(ModelAdmin):
     button_helper_class = PurgeRequestButtonHelper
     create_view_class = PurgeRequestSubmitView
     create_template_name = "modeladmin/wagtailpurge/create.html"
+    edit_view_class = PurgeRequestEditView
+    permission_helper_class = PurgeRequestPermissionHelper
     list_display = ["username", "created_at", "status", "error_message", "exec_time"]
     list_filter = ["status", "created_at"]
     list_select_related = True

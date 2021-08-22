@@ -1,9 +1,12 @@
 import asyncio
 
 from asgiref.sync import sync_to_async
+from django.shortcuts import redirect
 from django.utils.functional import cached_property
+from django.utils.translation import gettext_lazy as _
 
-from wagtail.contrib.modeladmin.views import CreateView
+from wagtail.admin import messages
+from wagtail.contrib.modeladmin.views import CreateView, EditView
 
 
 async def process_purge_request(obj):
@@ -25,3 +28,14 @@ class PurgeRequestSubmitView(CreateView):
         resp = super().form_valid(form)
         asyncio.run(process_purge_request(form.instance))
         return resp
+
+
+class PurgeRequestEditView(EditView):
+    def get(self, request, **kwargs):
+        messages.info(
+            request, _('Purge requests cannot be edited')
+        )
+        return redirect(self.index_url, permanent=True)
+
+    def post(self, request, **kwargs):
+        return self.get(request, **kwargs)

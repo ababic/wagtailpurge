@@ -33,7 +33,13 @@ class PurgeRequestModelAdmin(ModelAdmin):
     create_template_name = "modeladmin/wagtailpurge/create.html"
     edit_view_class = PurgeRequestEditView
     permission_helper_class = PurgeRequestPermissionHelper
-    list_display = ["username", "created_at", "status", "error_message", "exec_time"]
+    list_display = [
+        "username",
+        "created_at",
+        "status",
+        "error_message",
+        "execution_time",
+    ]
     list_filter = ["status", "created_at"]
     list_select_related = True
     ordering = ["-created_at"]
@@ -44,24 +50,6 @@ class PurgeRequestModelAdmin(ModelAdmin):
 
     def get_menu_label(self):
         return self.model.purge_menu_label
-
-    def username(self, obj):
-        if obj.submitter:
-            return obj.submitter.get_username()
-        return obj.submitter_username
-
-    username.short_description = _("submitter")
-
-    def exec_time(self, obj):
-        if obj.duration:
-            seconds = obj.duration.total_seconds()
-            if seconds < 0.01:
-                microseconds = seconds * 1000
-                return f"{microseconds:.2f}ms"
-            return f"{seconds:.2f}s"
-
-    exec_time.short_description = _("exec. time")
-    exec_time.admin_order_field = "duration"
 
 
 class WagtailPurgeModelAdmin(ModelAdminGroup):

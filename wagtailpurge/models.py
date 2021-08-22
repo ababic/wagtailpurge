@@ -133,6 +133,25 @@ class BasePurgeRequest(ClusterableModel, metaclass=PurgeRequestMetaclass):
         logger.debug(f"{self} was processed successfully")
         self.update_status(RequestStatusChoices.COMPLETED, set_duration=True)
 
+    def username(self) -> str:
+        if self.submitter:
+            return self.submitter.get_username()
+        return self.submitter_username
+
+    username.short_description = _("submitted by")
+
+    def execution_time(self) -> str:
+        if self.duration:
+            seconds = self.duration.total_seconds()
+            if seconds < 0.01:
+                microseconds = seconds * 1000
+                return f"{microseconds:.2f}ms"
+            return f"{seconds:.2f}s"
+        return "-"
+
+    execution_time.short_description = _("exe. time")
+    execution_time.admin_order_field = "duration"
+
 
 class DjangoCachePurgeRequest(BasePurgeRequest):
     purge_menu_label = _("Django cache")

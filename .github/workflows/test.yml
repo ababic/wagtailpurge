@@ -21,7 +21,7 @@ jobs:
   test-python:
     name: Test Python 🐍
     env:
-      DJANGO_SETTINGS_MODULE: wagtailpurge.tests.settings
+      DJANGO_SETTINGS_MODULE: wagtailpurge.testapp.settings
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout repo
@@ -46,7 +46,7 @@ jobs:
   test-python-legacy:
     name: Test Python 🐍 with older dependencies
     env:
-      DJANGO_SETTINGS_MODULE: wagtailpurge.tests.settings
+      DJANGO_SETTINGS_MODULE: wagtailpurge.testapp.settings
     needs: test-python
     runs-on: ubuntu-latest
     strategy:

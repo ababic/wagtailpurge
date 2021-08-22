@@ -42,7 +42,7 @@ TEMPLATES = [
 
 INSTALLED_APPS = (
     "wagtailpurge",
-    "wagtailpurge.tests",
+    "wagtailpurge.testapp",
     "modelcluster",
     "taggit",
     "django.contrib.auth",
@@ -69,7 +69,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
 ]
 
-ROOT_URLCONF = "wagtailpurge.tests.urls"
+ROOT_URLCONF = "wagtailpurge.testapp.urls"
 WAGTAIL_SITE_NAME = "Wagtailpurge"
 LOGIN_URL = "wagtailadmin_login"
 LOGIN_REDIRECT_URL = "wagtailadmin_home"
@@ -87,6 +87,8 @@ SECURE_SSL_REDIRECT = False
 
 # Use default static files storage for tests
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+STATIC_ROOT = os.path.join(PROJECT_DIR, "static")
+STATIC_URL = "/static/"
 
 # By default, Django uses a computationally difficult algorithm for passwords hashing.
 # We don't need such a strong algorithm in tests, so use MD5

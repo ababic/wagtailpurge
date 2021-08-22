@@ -32,8 +32,7 @@ Deletes all previously generated renditions for Wagtail images of your choosing.
 
 ### Custom purge request types
 
-Adding your own purge request type is easy peasy! Simply define your own 'request type' model by subclassing `BasePurgeRequest`, add any fields and panels you need, then add
-a `process()` method to your model to handle requests. Here's a quick example:
+If you want to purge something different, it's possible to add your own purge request type. The process is easier than you might think, as everything is defined on the model class. The only requirements are that you use the included `BasePurgeRequest` class as a base, and that you add a `process()` method to handle the actual 'purging' for each request. Here's an example:
 
 ```
 from django.db import models
@@ -66,7 +65,7 @@ class NaughtyMonkeyPurgeRequest(BasePurgeRequest):
     purge_menu_label = "Naughty monkey"
     purge_menu_icon = "warning"
 
-    # Optionally add columns in the listing
+    # Optionally add columns to the listing
     list_display_extra = ["name", "category", "custom_method"]
 
     # Optionally add filter options to the listing

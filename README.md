@@ -8,7 +8,7 @@ Trigger cache purges from within the Wagtail CMS. The app is tested for compatib
 
 1. Install this app with `pip install wagtailpurge`
 2. Add `wagtailpurge` to your `INSTALLED_APPS`
-3. Log into Wagtail and look out for **Purge** menu item :)
+3. Log into Wagtail and look out for the **Purge** menu item :)
 
 By default, only **superusers** can submit purge requests, but permissions for individual request types can easily be applied to your existing groups to make the functionality available to others.
 

@@ -1,4 +1,4 @@
-name: 📦 Package
+name: "Package"
 
 on:
   push:
@@ -6,16 +6,21 @@ on:
 
 jobs:
   publish_to_pypi:
-    name: Package 🐍 for PyPi
+    name: 📦 Publish to PyPi
+    if: ${{ startsWith(github.ref, 'refs/tags') }}
     runs-on: ubuntu-latest
     steps:
-      - name: Build
-        if: startsWith(github.ref, 'refs/tags')
-        run: |
-          python -m pip install build --user
-          python -m build --sdist --wheel --outdir dist/ .
-      - name: Publish
-        if: startsWith(github.ref, 'refs/tags')
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v2
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: ⬇️ Install dependencies
+        run: python -m pip install build --user
+      - name: 🏗️ Build
+        run: python -m build --sdist --wheel --outdir dist/ .
+      - name: 🚀 Publish
         uses: pypa/gh-action-pypi-publish@master
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}

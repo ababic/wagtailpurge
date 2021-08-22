@@ -9,7 +9,7 @@ jobs:
     name: Analyze
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
+    - name: ⬇️ Checkout repo
       uses: actions/checkout@v2
       with:
         # We must fetch at least the immediate parents so that if this is
@@ -22,10 +22,10 @@ jobs:
       if: ${{ github.event_name == 'pull_request' }}
 
     # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
+    - name: ⏳ Initialize CodeQL
       uses: github/codeql-action/init@v1
       with:
         languages: "python"
 
-    - name: Perform CodeQL Analysis
+    - name: 🪄 Analyze code
       uses: github/codeql-action/analyze@v1

@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    name: Test against Django/Wagtail main branches
+    name: Test Python 🐍 with main Django/Wagtail branches
     runs-on: ubuntu-latest
     continue-on-error: true
     strategy:
@@ -17,17 +17,17 @@ jobs:
           - django: Django>=3.2,<3.3
             wagtail: "git+https://github.com/wagtail/wagtail.git@main#egg=Wagtail"
     steps:
-      - name: Checkout repo
+      - name: ⬇️ Checkout repo
         uses: actions/checkout@v2
-      - name: Set up Python
+      - name: ⚙️ Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - name: Install dependencies
+      - name: ⬇️ Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -e .[test]
           pip install "${{ matrix.django }}"
           pip install "${{ matrix.wagtail }}"
-      - name: Run test suite
+      - name: 🔬 Run tests
         run: pytest

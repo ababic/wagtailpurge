@@ -1,6 +1,7 @@
 import asyncio
 
 from asgiref.sync import sync_to_async
+from django.db import transaction
 from django.shortcuts import redirect
 from django.utils.functional import cached_property
 from django.utils.text import capfirst
@@ -21,7 +22,7 @@ class PurgeRequestSubmitView(CreateView):
 
     def form_valid(self, form):
         resp = super().form_valid(form)
-        asyncio.run(process_purge_request(form.instance))
+        transaction.on_commit(lambda: asyncio.run(process_purge_request(form.instance)))
         return resp
 
     def get_success_message(self, instance):

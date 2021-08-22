@@ -5,6 +5,7 @@ from django.apps import apps
 from django.conf import settings
 from django.core.cache import caches
 from django.db import models
+from django.forms.widgets import RadioSelect
 from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
@@ -184,7 +185,7 @@ class PageURLPurgeRequest(BasePurgeRequest):
     class Meta:
         verbose_name = _("page URL purge request")
 
-    panels = [PageChooserPanel("page"), FieldPanel("magnitude")]
+    panels = [PageChooserPanel("page"), FieldPanel("magnitude", widget=RadioSelect())]
 
     @classmethod
     def is_enabled(cls) -> bool:

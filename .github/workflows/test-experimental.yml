@@ -7,6 +7,8 @@ on:
 jobs:
   test:
     name: Test Python 🐍 with main Django/Wagtail branches
+    env:
+      DJANGO_SETTINGS_MODULE: wagtailpurge.tests.settings
     runs-on: ubuntu-latest
     continue-on-error: true
     strategy:
@@ -29,5 +31,7 @@ jobs:
           pip install -e .[test]
           pip install "${{ matrix.django }}"
           pip install "${{ matrix.wagtail }}"
-      - name: 🔬 Run tests
+      - name: 🪣 Collect static files
+        run: django-admin collectstatic
+      - name: 🧪 Run tests
         run: pytest

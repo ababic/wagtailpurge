@@ -38,7 +38,9 @@ jobs:
           pip install -e .[test]
       - name: ✅ Check for missing migrations
         run: django-admin makemigrations --check --noinput
-      - name: 🔬 Run tests
+      - name: 🪣 Collect static files
+        run: django-admin collectstatic
+      - name: 🧪 Run tests
         run: pytest --junitxml=junit/test-results.xml --cov=wagtailpurge
 
   test-python-legacy:
@@ -72,5 +74,7 @@ jobs:
           pip install "${{ matrix.django }}"
           pip install "${{ matrix.wagtail }}"
           pip install -e .[test]
-      - name: 🔬 Run tests
+      - name: 🪣 Collect static files
+        run: django-admin collectstatic
+      - name: 🧪 Run tests
         run: pytest

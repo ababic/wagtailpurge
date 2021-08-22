@@ -19,7 +19,7 @@ on:
 
 jobs:
   test-current:
-    name: Test python code
+    name: Test Python code
     env:
       DJANGO_SETTINGS_MODULE: wagtailpurge.tests.settings
     runs-on: ubuntu-latest
@@ -42,7 +42,7 @@ jobs:
         run: pytest --junitxml=junit/test-results.xml --cov=wagtailpurge
 
   test-legacy:
-    name: Test python code with legacy dependencies
+    name: Test Python code with older dependency versions
     env:
       DJANGO_SETTINGS_MODULE: wagtailpurge.tests.settings
     needs: test-current

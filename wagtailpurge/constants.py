@@ -2,10 +2,7 @@ from django.apps import apps
 from django.db.models import IntegerChoices
 from django.utils.translation import gettext_lazy as _
 
-if apps.is_installed("wagtailfontawesome"):
-    APP_ICON = "fa-bolt"
-else:
-    APP_ICON = "cog"
+APP_ICON = "fa-bolt" if apps.is_installed("wagtailfontawesome") else "cog"
 
 
 class MagnitudeChoices(IntegerChoices):

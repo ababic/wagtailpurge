@@ -2,12 +2,12 @@ name: "Package"
 
 on:
   push:
-    branches: [main]
+    tags:
+      - v*
 
 jobs:
   publish_to_pypi:
     name: 📦 Publish to PyPi
-    if: startsWith(github.ref, 'refs/tags')
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout repo

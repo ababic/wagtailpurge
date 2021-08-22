@@ -1,11 +1,9 @@
 import asyncio
+
 from asgiref.sync import sync_to_async
-
 from django.utils.functional import cached_property
-from django.utils.translation import gettext_lazy as _
-from wagtail.contrib.modeladmin.views import CreateView
 
-from .constants import APP_APP_ICON
+from wagtail.contrib.modeladmin.views import CreateView
 
 
 async def process_purge_request(obj):
@@ -13,7 +11,6 @@ async def process_purge_request(obj):
 
 
 class PurgeRequestSubmitView(CreateView):
-
     def get_index_url(self):
         return self.model.list_url
 

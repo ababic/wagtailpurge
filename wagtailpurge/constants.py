@@ -1,7 +1,6 @@
 from django.apps import apps
 from django.db.models import IntegerChoices
-from django.utils.translation import ugettext_lazy as _
-
+from django.utils.translation import gettext_lazy as _
 
 if apps.is_installed("wagtailfontawesome"):
     APP_ICON = "fa-bolt"

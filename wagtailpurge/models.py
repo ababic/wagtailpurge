@@ -8,6 +8,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
+
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, PageChooserPanel
@@ -15,10 +16,10 @@ from wagtail.contrib.frontend_cache.utils import PurgeBatch
 from wagtail.core.models import Page
 from wagtail.core.query import PageQuerySet
 from wagtail.images import get_image_model, get_image_model_string
-from wagtail.images.models import AbstractRendition
 from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.images.models import AbstractRendition
 
-from .constants import ICON, MagnitudeChoices, RequestStatusChoices
+from .constants import APP_ICON, MagnitudeChoices, RequestStatusChoices
 from .forms import BaseDjangoCachePurgeRequestFormm
 
 logger = logging.getLogger("purge")
@@ -38,7 +39,7 @@ class PurgeRequestMetaclass(models.base.ModelBase):
                 " purge request", ""
             )
         if not hasattr(cls, "purge_menu_icon"):
-            cls.purge_menu_icon = ICON
+            cls.purge_menu_icon = APP_ICON
         if not cls._meta.abstract:
             # register this type
             REQUEST_CLASSES.append(cls)
@@ -60,7 +61,7 @@ class BasePurgeRequest(ClusterableModel, metaclass=PurgeRequestMetaclass):
         editable=False,
     )
     status_updated = models.DateTimeField(null=True, editable=False)
-    duration = models.DurationField(verbose_name="exec. time", null=True, editable=False)
+    duration = models.DurationField(null=True, editable=False)
 
     list_display_extra = ()
     list_filter_extra = ()

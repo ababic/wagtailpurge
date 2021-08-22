@@ -12,8 +12,10 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ("wagtailcore", "0062_comment_models_and_pagesubscription"),
-        ("images", "0012_customimage_overhaul"),
+        migrations.swappable_dependency(
+            getattr(settings, "WAGTAILIMAGES_IMAGE_MODEL", "wagtailimages.Image")
+        ),
+        ("wagtailcore", "0060_fix_workflow_unique_constraint"),
     ]
 
     operations = [
@@ -39,8 +41,8 @@ class Migration(migrations.Migration):
                             (0, "New"),
                             (1, "Rejected"),
                             (2, "Approved"),
-                            (3, "Cancelled"),
-                            (4, "Processing"),
+                            (3, "Processing"),
+                            (4, "Cancelled"),
                             (5, "Failed"),
                             (6, "Completed"),
                         ],
@@ -93,7 +95,9 @@ class Migration(migrations.Migration):
                     models.ForeignKey(
                         null=True,
                         on_delete=django.db.models.deletion.SET_NULL,
-                        to="images.customimage",
+                        to=getattr(
+                            settings, "WAGTAILIMAGES_IMAGE_MODEL", "wagtailimages.Image"
+                        ),
                         verbose_name="image",
                     ),
                 ),
@@ -102,7 +106,7 @@ class Migration(migrations.Migration):
                     modelcluster.fields.ParentalKey(
                         on_delete=django.db.models.deletion.CASCADE,
                         related_name="images",
-                        to="purge.imagerenditionspurgerequest",
+                        to="wagtailpurge.imagerenditionspurgerequest",
                     ),
                 ),
             ],
@@ -126,11 +130,11 @@ class Migration(migrations.Migration):
                     "status",
                     models.PositiveSmallIntegerField(
                         choices=[
-                            (0, "Requested"),
+                            (0, "New"),
                             (1, "Rejected"),
                             (2, "Approved"),
-                            (3, "Cancelled"),
-                            (4, "Processing"),
+                            (3, "Processing"),
+                            (4, "Cancelled"),
                             (5, "Failed"),
                             (6, "Completed"),
                         ],
@@ -145,8 +149,8 @@ class Migration(migrations.Migration):
                     models.IntegerField(
                         choices=[
                             (1, "The selected page only"),
-                            (2, "The selected page and it's direct children"),
-                            (3, "The selected page and all of it's descendants"),
+                            (2, "The selected page and its direct children"),
+                            (3, "The selected page and all of its descendants"),
                         ],
                         db_index=True,
                         default=1,
@@ -207,11 +211,11 @@ class Migration(migrations.Migration):
                     "status",
                     models.PositiveSmallIntegerField(
                         choices=[
-                            (0, "Requested"),
+                            (0, "New"),
                             (1, "Rejected"),
                             (2, "Approved"),
-                            (3, "Cancelled"),
-                            (4, "Processing"),
+                            (3, "Processing"),
+                            (4, "Cancelled"),
                             (5, "Failed"),
                             (6, "Completed"),
                         ],

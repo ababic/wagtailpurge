@@ -2,14 +2,12 @@ from typing import Iterable, Sequence, Type
 
 from django.utils.functional import classproperty
 from django.utils.translation import gettext_lazy as _
-from wagtail.contrib.modeladmin.options import (
-    ModelAdmin,
-    ModelAdminGroup,
-)
-from wagtail.contrib.modeladmin.helpers import ButtonHelper
 
-from .models import REQUEST_CLASSES
+from wagtail.contrib.modeladmin.helpers import ButtonHelper
+from wagtail.contrib.modeladmin.options import ModelAdmin, ModelAdminGroup
+
 from .constants import APP_ICON
+from .models import REQUEST_CLASSES
 from .views import PurgeRequestSubmitView
 
 
@@ -50,11 +48,12 @@ class PurgeRequestModelAdmin(ModelAdmin):
         if obj.duration:
             seconds = obj.duration.total_seconds()
             if seconds < 0.01:
-                microseconds = seconds*1000
+                microseconds = seconds * 1000
                 return f"{microseconds:.2f}ms"
             return f"{seconds:.2f}s"
-    exec_time.short_description = _('exec. time')
-    exec_time.admin_order_field = 'duration'
+
+    exec_time.short_description = _("exec. time")
+    exec_time.admin_order_field = "duration"
 
 
 class WagtailPurgeModelAdmin(ModelAdminGroup):

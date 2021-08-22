@@ -1,7 +1,7 @@
 from django import forms
 from django.conf import settings
-from wagtail.admin.forms import WagtailAdminModelForm
 
+from wagtail.admin.forms import WagtailAdminModelForm
 
 CACHE_NAME_CHOICES = tuple(
     (key, f"{key} ({val['BACKEND'].split('.')[-1]})")

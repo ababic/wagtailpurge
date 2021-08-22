@@ -8,7 +8,7 @@ from wagtail.contrib.modeladmin.options import ModelAdmin, ModelAdminGroup
 
 from .constants import APP_ICON
 from .models import REQUEST_CLASSES
-from .views import PurgeRequestSubmitView, PurgeRequestEditView
+from .views import PurgeRequestEditView, PurgeRequestSubmitView
 
 
 class PurgeRequestPermissionHelper(PermissionHelper):

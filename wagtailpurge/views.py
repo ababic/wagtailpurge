@@ -3,6 +3,7 @@ import asyncio
 from asgiref.sync import sync_to_async
 from django.shortcuts import redirect
 from django.utils.functional import cached_property
+from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _
 
 from wagtail.admin import messages
@@ -14,12 +15,6 @@ async def process_purge_request(obj):
 
 
 class PurgeRequestSubmitView(CreateView):
-    def get_index_url(self):
-        return self.model.list_url
-
-    def get_add_url(self):
-        return self.model.submit_url
-
     @cached_property
     def instance(self):
         return self.model(submitter=self.request.user)
@@ -29,12 +24,19 @@ class PurgeRequestSubmitView(CreateView):
         asyncio.run(process_purge_request(form.instance))
         return resp
 
+    def get_success_message(self, instance):
+        return _("%(model_name)s '%(instance)s' was submitted.") % {
+            "model_name": capfirst(self.opts.verbose_name),
+            "instance": instance,
+        }
+
+    def get_success_message_buttons(self, instance):
+        return []
+
 
 class PurgeRequestEditView(EditView):
     def get(self, request, **kwargs):
-        messages.info(
-            request, _('Purge requests cannot be edited')
-        )
+        messages.info(request, _("Purge requests cannot be edited"))
         return redirect(self.index_url, permanent=True)
 
     def post(self, request, **kwargs):

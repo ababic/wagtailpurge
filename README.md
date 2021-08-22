@@ -73,8 +73,9 @@ class NaughtyMonkeyPurgeRequest(BasePurgeRequest):
 
     def process(self) -> None:
         """
-        Handle this monkey purge request. No value needs to be returned,
-        and any exceptions raised here will be logged automatically.
+        Implemenst 'handling' for this request. The method doesn't need to
+        return anything, and any exceptions raised here will be logged
+        automatically.
         """
         purge_naughty_monkey(self.name, self.category)
 

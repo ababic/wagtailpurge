@@ -4,9 +4,15 @@ from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
 import taggit.managers
-import wagtail.core.models.collections
 import wagtail.images.models
 import wagtail.search.index
+
+try:
+    # Wagtail >= 2.13+
+    from wagtail.core.models.collections import get_root_collection_id
+except ModuleNotFoundError:
+    # Wagtail <= 2.12
+    from wagtail.core.models import get_root_collection_id
 
 
 class Migration(migrations.Migration):
@@ -14,7 +20,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ("wagtailcore", "0062_comment_models_and_pagesubscription"),
+        ("wagtailcore", "0060_fix_workflow_unique_constraint"),
         ("taggit", "0003_taggeditem_add_unique_index"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
@@ -68,7 +74,7 @@ class Migration(migrations.Migration):
                 (
                     "collection",
                     models.ForeignKey(
-                        default=wagtail.core.models.collections.get_root_collection_id,
+                        default=get_root_collection_id,
                         on_delete=django.db.models.deletion.CASCADE,
                         related_name="+",
                         to="wagtailcore.collection",

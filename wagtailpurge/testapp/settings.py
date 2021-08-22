@@ -100,3 +100,5 @@ WAGTAILFRONTENDCACHE = {
         "LOCATION": "http://localhost:8000",
     },
 }
+
+WAGTAILIMAGES_IMAGE_MODEL = "testapp.CustomImage"

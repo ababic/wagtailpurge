@@ -3,11 +3,14 @@ from typing import Iterable, Sequence
 
 from django.apps import apps
 from django.conf import settings
+from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.core.cache import caches
 from django.db import models
 from django.forms.widgets import RadioSelect
 from django.utils import timezone
 from django.utils.functional import cached_property
+from django.utils.html import format_html
+from django.utils.safestring import SafeString
 from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
@@ -133,12 +136,11 @@ class BasePurgeRequest(ClusterableModel, metaclass=PurgeRequestMetaclass):
         logger.debug(f"{self} was processed successfully")
         self.update_status(RequestStatusChoices.COMPLETED, set_duration=True)
 
+    @property
     def username(self) -> str:
         if self.submitter:
             return self.submitter.get_username()
         return self.submitter_username
-
-    username.short_description = _("submitted by")
 
     def execution_time(self) -> str:
         if self.duration:
@@ -149,8 +151,18 @@ class BasePurgeRequest(ClusterableModel, metaclass=PurgeRequestMetaclass):
             return f"{seconds:.2f}s"
         return "-"
 
-    execution_time.short_description = _("exe. time")
+    execution_time.short_description = _("took")
     execution_time.admin_order_field = "duration"
+
+    def submitted_display(self) -> SafeString:
+        return format_html(
+            '<span style="whitespace: nowrap;">{}</span> by <b>{}</b>',
+            naturaltime(self.created_at),
+            self.username,
+        )
+
+    submitted_display.short_description = _("submitted")
+    execution_time.admin_order_field = "created_at"
 
 
 class DjangoCachePurgeRequest(BasePurgeRequest):

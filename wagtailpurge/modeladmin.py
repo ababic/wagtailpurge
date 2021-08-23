@@ -34,9 +34,8 @@ class PurgeRequestModelAdmin(ModelAdmin):
     edit_view_class = PurgeRequestEditView
     permission_helper_class = PurgeRequestPermissionHelper
     list_display = [
-        "username",
-        "created_at",
         "status",
+        "submitted_display",
         "error_message",
         "execution_time",
     ]

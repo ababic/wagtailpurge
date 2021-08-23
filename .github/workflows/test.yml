@@ -21,7 +21,7 @@ jobs:
   test-python:
     name: Test Python 🐍
     env:
-      DJANGO_SETTINGS_MODULE: wagtailpurge.tests.settings
+      DJANGO_SETTINGS_MODULE: wagtailpurge.testapp.settings
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout repo
@@ -38,13 +38,15 @@ jobs:
           pip install -e .[test]
       - name: ✅ Check for missing migrations
         run: django-admin makemigrations --check --noinput
-      - name: 🔬 Run tests
+      - name: 🪣 Collect static files
+        run: django-admin collectstatic
+      - name: 🧪 Run tests
         run: pytest --junitxml=junit/test-results.xml --cov=wagtailpurge
 
   test-python-legacy:
     name: Test Python 🐍 with older dependencies
     env:
-      DJANGO_SETTINGS_MODULE: wagtailpurge.tests.settings
+      DJANGO_SETTINGS_MODULE: wagtailpurge.testapp.settings
     needs: test-python
     runs-on: ubuntu-latest
     strategy:
@@ -72,5 +74,7 @@ jobs:
           pip install "${{ matrix.django }}"
           pip install "${{ matrix.wagtail }}"
           pip install -e .[test]
-      - name: 🔬 Run tests
+      - name: 🪣 Collect static files
+        run: django-admin collectstatic
+      - name: 🧪 Run tests
         run: pytest

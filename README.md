@@ -33,7 +33,7 @@ Deletes all existing renditions for a Wagtail image (or images) of your choosing
 
 If the `wagtail.contrib.frontend_cache` app is installed, purge requests will also be sent to your CDN or upstream cache for the URL of each rendition, allowing the users to download freshly generated ones. 
 
-### Custom purge requests
+### 4. Custom purge requests
 
 If you want to purge something different, it's possible to add your own purge request type. The process is easier than you might think, as everything is defined on the model class. The only requirements are that you use the included `BasePurgeRequest` class as a base, and that you add a `process()` method to handle the actual 'purging' for each request. Here's an example:
 

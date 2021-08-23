@@ -9,7 +9,7 @@ jobs:
     name: Analyze
     runs-on: ubuntu-latest
     steps:
-    - name: ⬇️ Checkout repo
+    - name: Checkout repository
       uses: actions/checkout@v2
       with:
         # We must fetch at least the immediate parents so that if this is
@@ -27,5 +27,5 @@ jobs:
       with:
         languages: "python"
 
-    - name: 🪄 Analyze code
+    - name: 🔬 Analyze code
       uses: github/codeql-action/analyze@v1

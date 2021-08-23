@@ -15,21 +15,23 @@ By default, only **superusers** can submit purge requests, but permissions for i
 
 ## What can I purge?
 
-### Django caches
+### 1. Django caches
 
 Utilizes Django's low-level cache API to clear a cache from your project's `CACHES` setting value.
 
-NOTE: This option is only available when `CACHES` contains at least one item.
+**NOTE:** This option is only available when `CACHES` contains at least one item.
 
-### Wagtail page URLs
+### 2. Wagtail page URLs
 
 Utilizes Wagtail's `wagtail.contrib.frontend_cache` app to purge selected page URLs from a CDN or upstream cache. You can easily purge sections of the tree by choosing to purge children or descendants of the selected page.
 
-NOTE: This option is only available when `wagtail.contrib.frontend_cache` is installed.
+**NOTE:** This option is only available when `wagtail.contrib.frontend_cache` is installed.
 
-### Wagtail image renditions
+### 3. Wagtail image renditions
 
-Deletes all existing renditions for a Wagtail image (or images) of your choosing. If the `wagtail.contrib.frontend_cache` app is installed, purge requests will also be sent to your CDN or upstream cache for the URL of each rendition, allowing the users to download freshly generated ones. 
+Deletes all existing renditions for a Wagtail image (or images) of your choosing. 
+
+If the `wagtail.contrib.frontend_cache` app is installed, purge requests will also be sent to your CDN or upstream cache for the URL of each rendition, allowing the users to download freshly generated ones. 
 
 ### Custom purge requests
 
@@ -74,7 +76,7 @@ class NaughtyMonkeyPurgeRequest(BasePurgeRequest):
 
     def process(self) -> None:
         """
-        Implemenst 'handling' for this request. The method doesn't need to
+        Implements 'handling' for this request. The method doesn't need to
         return anything, and any exceptions raised here will be logged
         automatically.
         """

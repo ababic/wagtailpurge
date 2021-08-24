@@ -35,13 +35,17 @@ If the `wagtail.contrib.frontend_cache` app is installed, purge requests will al
 
 ### 4. Custom purge requests
 
-If you want to purge something different, it's possible to add your own purge request type. The process is easier than you might think, as everything is defined on the model class. The only requirements are that you use the included `BasePurgeRequest` class as a base, and that you add a `process()` method to handle the actual 'purging' for each request. Here's an example:
+If you want to purge something else, it's possible to add your own model class with the fields and functionality you need. The only requirements are that you use `BasePurgeRequest` as a base, and that you add a `process()` method to handle the actual 'purging' of each request.
+
+Here is an example:
 
 ```
+# myproject/purge/models.py
+
 from django.db import models
 from django.forms.widgets import RadioSelect
 from wagtailcache.models import BasePurgeRequest
-from .utils import purge_naughty_monkey
+from .utils import purge_chimp
 
 
 class NaughtinessCategoryChoices(models.TextChoices):
@@ -50,9 +54,12 @@ class NaughtinessCategoryChoices(models.TextChoices):
     TOMFOOLERY = "tomfoolery", "General tomfoolery"
 
 
-class NaughtyMonkeyPurgeRequest(BasePurgeRequest):
+class NaughtyChimpPurgeRequest(BasePurgeRequest):
     # Add custom fields
-    name = models.CharField(max_length=100)
+    name = models.CharField(
+        max_length=100,
+        help_text="e.g. Peanuts",
+    )
     category = models.CharField(
         max_length=30,
         choices=NaughtinessCategoryChoices.choices
@@ -65,7 +72,7 @@ class NaughtyMonkeyPurgeRequest(BasePurgeRequest):
     )
 
     # Optionally override the menu label and icon
-    purge_menu_label = "Naughty monkey"
+    purge_menu_label = "Naughty chimp"
     purge_menu_icon = "warning"
 
     # Optionally add columns to the listing
@@ -76,17 +83,24 @@ class NaughtyMonkeyPurgeRequest(BasePurgeRequest):
 
     def process(self) -> None:
         """
-        Implements 'handling' for this request. The method doesn't need to
+        Implements 'handling' for this purge request. The method doesn't need to
         return anything, and any exceptions raised here will be logged
         automatically.
         """
-        purge_naughty_monkey(self.name, self.category)
+        purge_chimp(self.name, self.category)
 
     def custom_method(self) -> str:
         """
         Include non-field columns in the listing by adding a model
-        method to return what you need, and include the method name
+        method to return what you need, and including the method name
         in `list_display_extra`.
         """
-        return "Custom value"
+        return "Bannana!"
 ```
+
+#### Once you have defined your custom model:
+
+1. Ensure the app where you added `models.py` is in your project's `INSTALLED_APPS` setting (e.g. `"myproject.purge"`).
+2. From the shell, run `python manage.py makemigrations appname` to create database migrations for your app.
+3. From the shell, run `python manage.py migrate` to apply the migration to your database.
+4. Log into Wagtail and look out for your new option in the **Purge** menu :)

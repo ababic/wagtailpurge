@@ -7,6 +7,7 @@ from wagtail.contrib.modeladmin.helpers import ButtonHelper, PermissionHelper
 from wagtail.contrib.modeladmin.options import ModelAdmin, ModelAdminGroup
 
 from .constants import APP_ICON
+from .filters import RelevantStatusFilter
 from .models import REQUEST_CLASSES
 from .views import PurgeRequestEditView, PurgeRequestSubmitView
 
@@ -34,13 +35,12 @@ class PurgeRequestModelAdmin(ModelAdmin):
     edit_view_class = PurgeRequestEditView
     permission_helper_class = PurgeRequestPermissionHelper
     list_display = [
-        "username",
-        "created_at",
         "status",
+        "submitted_display",
         "error_message",
         "execution_time",
     ]
-    list_filter = ["status", "created_at"]
+    list_filter = [RelevantStatusFilter, "created_at"]
     list_select_related = True
     ordering = ["-created_at"]
 

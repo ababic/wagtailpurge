@@ -95,7 +95,7 @@ class NaughtyChimpPurgeRequest(BasePurgeRequest):
         method to return what you need, and including the method name
         in `list_display_extra`.
         """
-        return "Bannana!"
+        return "BANANA!"
 ```
 
 #### Once you have defined your custom model:

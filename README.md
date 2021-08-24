@@ -100,7 +100,7 @@ class NaughtyChimpPurgeRequest(BasePurgeRequest):
 
 #### Once you have defined your custom model:
 
-1. Ensure the app with the updated `models.py` (e.g. `"myproject.purge"`) in included in your project's `INSTALLED_APPS` setting.
+1. Ensure the app with the updated `models.py` (e.g. `"myproject.purge"`) is included in your project's `INSTALLED_APPS` setting.
 2. From the shell, run `python manage.py makemigrations appname` to create database migrations for your app.
 3. From the shell, run `python manage.py migrate` to apply the migration to your database.
 4. Log into Wagtail and look out for your new option in the **Purge** menu :)

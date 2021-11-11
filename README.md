@@ -21,19 +21,23 @@ Utilizes Django's low-level cache API to clear a cache from your project's `CACH
 
 **NOTE:** This option is only available when `CACHES` contains at least one item.
 
-### 2. Wagtail page URLs
+### 2. Individual URLs
+
+Utilizes Wagtail's `wagtail.contrib.frontend_cache` app to purge a single URL of your choosing from a CDN or upstream cache. The URL can be anything from a page URL to a harcoded Django view URL, or even a URL completely out of the app's control (as long as it's on a domain managed by the same CDN / upstream cache service).
+
+### 3. Wagtail page URLs
 
 Utilizes Wagtail's `wagtail.contrib.frontend_cache` app to purge selected page URLs from a CDN or upstream cache. You can easily purge sections of the tree by choosing to purge children or descendants of the selected page.
 
 **NOTE:** This option is only available when `wagtail.contrib.frontend_cache` is installed.
 
-### 3. Wagtail image renditions
+### 4. Wagtail image renditions
 
 Deletes all existing renditions for a Wagtail image (or images) of your choosing. 
 
 If the `wagtail.contrib.frontend_cache` app is installed, purge requests will also be sent to your CDN or upstream cache for the URL of each rendition, allowing the users to download freshly generated ones. 
 
-### 4. Custom purge requests
+### 5. Custom purge requests
 
 If you want to purge something else, it's possible to add your own model class with the fields and functionality you need. The only requirements are that you use `BasePurgeRequest` as a base, and that you add a `process()` method to handle the actual 'purging' of each request.
 

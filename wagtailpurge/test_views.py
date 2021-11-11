@@ -40,14 +40,14 @@ def test_index_view(admin_client, admin_user):
     assert len(response.context["object_list"]) == 1
 
 
-def test_submit_view_get(admin_client, admin_user):
+def test_submit_view_sets_submitter_to_current_user(admin_client, admin_user):
     response = admin_client.get(SUBMIT_URL)
     assert response.status_code == 200
     assert response.context["form"].instance.submitter == admin_user
 
 
 def test_submit_view_post(admin_client, admin_user):
-    # Avoiding 'default' because clearing an in-user cache is undesirable
+    # Avoiding 'default' because clearing an in-use cache is undesirable
     cache_name = "secondary"
     response = admin_client.post(SUBMIT_URL, data={"cache_name": cache_name})
 
@@ -63,7 +63,7 @@ def test_submit_view_post(admin_client, admin_user):
     assert obj.submitter_username == admin_user.get_username()
 
 
-def test_edit_view(admin_client, admin_user):
+def test_edit_attempts_redirect_back_to_the_relevant_listing(admin_client, admin_user):
     obj = DjangoCachePurgeRequest.objects.create(
         cache_name="default", submitter=admin_user
     )

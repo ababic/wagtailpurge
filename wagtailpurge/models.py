@@ -77,6 +77,9 @@ class BasePurgeRequest(ClusterableModel, metaclass=PurgeRequestMetaclass):
     def is_enabled(cls) -> bool:
         return True
 
+    def get_purge_batch(self):
+        return PurgeBatch()
+
     def save(self, *args, **kwargs):
         if not self.submitter_username and self.submitter:
             # This change may or may not be saved,
@@ -190,6 +193,34 @@ class DjangoCachePurgeRequest(BasePurgeRequest):
         caches[self.cache_name].clear()
 
 
+class URLPurgeRequest(BasePurgeRequest):
+    purge_menu_label = _("URL")
+    purge_menu_icon = "link"
+
+    url = models.URLField(
+        verbose_name=_("URL"),
+        help_text=_(
+            "Please enter a full URL, including the scheme and domain (e.g. https://www.example.com/some-url)."
+        ),
+        max_length=255,
+    )
+
+    panels = [FieldPanel("url")]
+    list_display_extra = ["url"]
+
+    @classmethod
+    def is_enabled(cls) -> bool:
+        return FRONTENDCACHE_USED
+
+    def process(self) -> None:
+        """
+        Use PurgeBatch with a single URL
+        """
+        purge_batch = self.get_purge_batch()
+        purge_batch.add_url(self.url)
+        purge_batch.purge()
+
+
 class PageURLPurgeRequest(BasePurgeRequest):
     purge_menu_label = _("Page URLs")
     purge_menu_icon = "doc-full-inverse"
@@ -234,7 +265,7 @@ class PageURLPurgeRequest(BasePurgeRequest):
         """
         Use PurgeBatch to purge the URLs of all relevant pages.
         """
-        purge_batch = PurgeBatch()
+        purge_batch = self.get_purge_batch()
         for page in self.get_target_pages().specific(defer=True).iterator():
             purge_batch.add_page(page)
 

@@ -1,4 +1,9 @@
-# Wagtail-purge Changelog
+# Wagtailpurge Changelog
+
+## 0.3.0 (2021-11-11)
+
+- Add the `URLPurgeRequest` request type.
+- Improve test coverage.
 
 ## 0.2.0 (2021-08-23)
 

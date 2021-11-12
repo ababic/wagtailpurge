@@ -23,13 +23,13 @@ Utilizes Django's low-level cache API to clear a cache from your project's `CACH
 
 ### 2. Individual URLs
 
-Utilizes Wagtail's `wagtail.contrib.frontend_cache` app to purge a single URL of your choosing from a CDN or upstream cache. The URL can be anything from a page URL to a harcoded Django view URL, or even a URL completely out of the app's control (as long as it's on a domain managed by the same CDN / upstream cache service).
+Utilizes Wagtail's `wagtail.contrib.frontend_cache` app to purge a single URL of your choosing from a CDN or downstream cache. The URL can be anything from a page URL to a harcoded Django view URL, or even a URL completely out of the app's control (as long as it's on a domain managed by the same CDN / upstream cache service).
 
 **NOTE:** This option is only available when `wagtail.contrib.frontend_cache` is installed.
 
 ### 3. Wagtail page URLs
 
-Utilizes Wagtail's `wagtail.contrib.frontend_cache` app to purge selected page URLs from a CDN or upstream cache. You can easily purge sections of the tree by choosing to purge children or descendants of the selected page.
+Utilizes Wagtail's `wagtail.contrib.frontend_cache` app to purge selected page URLs from a CDN or downstream cache. You can easily purge sections of the tree by choosing to purge children or descendants of the selected page.
 
 **NOTE:** This option is only available when `wagtail.contrib.frontend_cache` is installed.
 
@@ -37,7 +37,7 @@ Utilizes Wagtail's `wagtail.contrib.frontend_cache` app to purge selected page U
 
 Deletes all existing renditions for a Wagtail image (or images) of your choosing.
 
-If the `wagtail.contrib.frontend_cache` app is installed, purge requests will also be sent to your CDN or upstream cache for the URL of each rendition, allowing the users to download freshly generated ones.
+If the `wagtail.contrib.frontend_cache` app is installed, purge requests will also be sent to your CDN or dowmstream cache for the URL of each rendition, allowing the users to download freshly generated ones.
 
 ### 5. Custom purge requests
 

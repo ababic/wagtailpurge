@@ -1,7 +1,7 @@
-import asyncio
+import threading
 
 from asgiref.sync import sync_to_async
-from django.db import transaction
+from django.db import connection, transaction
 from django.shortcuts import redirect
 from django.utils.functional import cached_property
 from django.utils.text import capfirst
@@ -11,8 +11,14 @@ from wagtail.admin import messages
 from wagtail.contrib.modeladmin.views import CreateView, EditView
 
 
-async def process_purge_request(obj):
-    await sync_to_async(obj._process, thread_sensitive=False)()
+def process_purge_request(obj):
+    try:
+        obj._process()
+    finally:
+        # Usually, the request/response cycle will take care of
+        # this, but when using threads, we need to make sure
+        # DB connections are closed.
+        connection.close()
 
 
 class PurgeRequestSubmitView(CreateView):
@@ -22,7 +28,11 @@ class PurgeRequestSubmitView(CreateView):
 
     def form_valid(self, form):
         resp = super().form_valid(form)
-        transaction.on_commit(lambda: asyncio.run(process_purge_request(form.instance)))
+        # once changes are commited to the DB, process the request in a new thread
+        thread = threading.Thread(
+            target=process_purge_request, args=[form.instance], daemon=True
+        )
+        transaction.on_commit(thread.start)
         return resp
 
     def get_success_message(self, instance):

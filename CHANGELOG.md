@@ -1,5 +1,9 @@
 # Wagtailpurge Changelog
 
+## 0.4.0 (TBC)
+
+- Handle request processing in a separate thread using python's native `threading` module.
+
 ## 0.3.0 (2021-11-11)
 
 - Add the `URLPurgeRequest` request type.

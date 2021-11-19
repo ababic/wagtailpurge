@@ -37,7 +37,7 @@ Utilizes Wagtail's `wagtail.contrib.frontend_cache` app to purge selected page U
 
 Deletes all existing renditions for a Wagtail image (or images) of your choosing.
 
-If the `wagtail.contrib.frontend_cache` app is installed, purge requests will also be sent to your CDN or dowmstream cache for the URL of each rendition, allowing the users to download freshly generated ones.
+If the `wagtail.contrib.frontend_cache` app is installed, purge requests will also be sent to your CDN or downstream cache for the URL of each rendition, allowing the users to download freshly generated ones.
 
 ### 5. Custom purge requests
 

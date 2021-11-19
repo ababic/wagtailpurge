@@ -23,7 +23,7 @@ Utilizes Django's low-level cache API to clear a cache from your project's `CACH
 
 ### 2. Individual URLs
 
-Utilizes Wagtail's `wagtail.contrib.frontend_cache` app to purge a single URL of your choosing from a CDN or downstream cache. The URL can be anything from a page URL to a harcoded Django view URL, or even a URL completely out of the app's control (as long as it's on a domain managed by the same CDN / upstream cache service).
+Utilizes Wagtail's `wagtail.contrib.frontend_cache` app to purge a single URL of your choosing from a CDN or downstream cache. The URL can be anything from a page URL to a harcoded Django view URL, or even a URL completely out of the app's control (as long as it's on a domain managed by the same CDN / downstream cache account).
 
 **NOTE:** This option is only available when `wagtail.contrib.frontend_cache` is installed.
 

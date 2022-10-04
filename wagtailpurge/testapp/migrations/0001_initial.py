@@ -13,6 +13,7 @@ if WAGTAIL_VERSION >= "3":
 else:
     from wagtail.core.models import get_root_collection_id
 
+
 class Migration(migrations.Migration):
 
     initial = True
@@ -67,7 +68,9 @@ class Migration(migrations.Migration):
                 ("file_size", models.PositiveIntegerField(editable=False, null=True)),
                 (
                     "file_hash",
-                    models.CharField(blank=True, editable=False, max_length=40),
+                    models.CharField(
+                        blank=True, db_index=True, editable=False, max_length=40
+                    ),
                 ),
                 (
                     "collection",

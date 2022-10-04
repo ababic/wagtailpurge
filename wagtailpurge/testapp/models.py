@@ -4,7 +4,9 @@ from wagtail.images.models import AbstractImage, AbstractRendition
 
 
 class CustomImage(AbstractImage):
-    pass
+    file_hash = models.CharField(
+        blank=True, db_index=True, editable=False, max_length=40
+    )
 
 
 class Rendition(AbstractRendition):

@@ -1,5 +1,7 @@
 import os
 
+from wagtail import __version__ as WAGTAIL_VERSION
+
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 ALLOWED_HOSTS = ["*"]
@@ -40,7 +42,7 @@ TEMPLATES = [
     }
 ]
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     "wagtailpurge",
     "wagtailpurge.testapp",
     "modelcluster",
@@ -52,7 +54,6 @@ INSTALLED_APPS = (
     "django.contrib.staticfiles",
     "django.contrib.sites",
     "wagtail.admin",
-    "wagtail.core",
     "wagtail.sites",
     "wagtail.search",
     "wagtail.users",
@@ -60,7 +61,11 @@ INSTALLED_APPS = (
     "wagtail.documents",
     "wagtail.contrib.frontend_cache",
     "wagtail.contrib.modeladmin",
-)
+]
+if WAGTAIL_VERSION >= "3":
+    INSTALLED_APPS.append("wagtail")
+else:
+    INSTALLED_APPS.append("wagtail.core")
 
 MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",

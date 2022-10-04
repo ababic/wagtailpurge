@@ -15,16 +15,22 @@ from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
+from wagtail import __version__ as WAGTAIL_VERSION
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, PageChooserPanel
 from wagtail.contrib.frontend_cache.utils import PurgeBatch
-from wagtail.core.models import Page
-from wagtail.core.query import PageQuerySet
 from wagtail.images import get_image_model, get_image_model_string
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.images.models import AbstractRendition
 
 from .constants import APP_ICON, MagnitudeChoices, RequestStatusChoices
 from .forms import BaseDjangoCachePurgeRequestFormm
+
+if WAGTAIL_VERSION >= "3":
+    from wagtail.models import Page
+    from wagtail.query import PageQuerySet
+else:
+    from wagtail.core.models import Page
+    from wagtail.core.query import PageQuerySet
 
 logger = logging.getLogger("purge")
 

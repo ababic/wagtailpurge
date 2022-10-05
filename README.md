@@ -1,8 +1,8 @@
 # wagtailpurge
 
 Trigger cache purges from within the Wagtail CMS. The app is tested for compatibility with:
-- Django >= 3.1
-- Wagtail >= 2.12
+- Django >= 3.2
+- Wagtail >= 2.16
 
 ## Get started
 

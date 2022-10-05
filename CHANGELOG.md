@@ -1,8 +1,12 @@
 # Wagtailpurge Changelog
 
-## 0.4.0 (TBC)
+## 1.0 (2022-10-05)
 
 - Handle request processing in a separate thread using python's native `threading` module.
+- Added support for Wagtail 2.16, 3.0 and 4.0
+- Dropped support for Wagtail 2.12 -> 2.15
+- Added support for Django 4.0
+- Dropped support for Django 3.1
 
 ## 0.3.0 (2021-11-11)
 

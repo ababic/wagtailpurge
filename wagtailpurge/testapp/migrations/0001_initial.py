@@ -4,14 +4,13 @@ from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
 import taggit.managers
+from wagtail import __version__ as WAGTAIL_VERSION
 import wagtail.images.models
 import wagtail.search.index
 
-try:
-    # Wagtail >= 2.13+
-    from wagtail.core.models.collections import get_root_collection_id
-except ModuleNotFoundError:
-    # Wagtail <= 2.12
+if WAGTAIL_VERSION >= "3":
+    from wagtail.models import get_root_collection_id
+else:
     from wagtail.core.models import get_root_collection_id
 
 
@@ -69,7 +68,9 @@ class Migration(migrations.Migration):
                 ("file_size", models.PositiveIntegerField(editable=False, null=True)),
                 (
                     "file_hash",
-                    models.CharField(blank=True, editable=False, max_length=40),
+                    models.CharField(
+                        blank=True, db_index=True, editable=False, max_length=40
+                    ),
                 ),
                 (
                     "collection",

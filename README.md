@@ -53,22 +53,19 @@ from django.forms.widgets import RadioSelect
 from wagtailcache.models import BasePurgeRequest
 from .utils import purge_chimp
 
-
-class NaughtinessCategoryChoices(models.TextChoices):
-    BITING = "biting", "Biting"
-    SCRATCHING = "scratching", "Scratching"
-    TOMFOOLERY = "tomfoolery", "General tomfoolery"
-
-
 class NaughtyChimpPurgeRequest(BasePurgeRequest):
     # Add custom fields
     name = models.CharField(
         max_length=100,
         help_text="e.g. Peanuts",
     )
-    category = models.CharField(
-        max_length=30,
-        choices=NaughtinessCategoryChoices.choices
+    naughtiness_category = models.CharField(
+        max_length=20,
+        choices=(
+            ("biting", "Biting"),
+            ("scratching", "Scratching"),
+            ("tomfoolery", "General tomfoolery"),
+        )
     )
 
     # Add panels to show custom fields in the submit form
@@ -82,10 +79,10 @@ class NaughtyChimpPurgeRequest(BasePurgeRequest):
     purge_menu_icon = "warning"
 
     # Optionally add columns to the listing
-    list_display_extra = ["name", "category", "custom_method"]
+    list_display_extra = ["name", "naughtiness_category", "custom_method"]
 
     # Optionally add filter options to the listing
-    list_filter_extra = ["category"]
+    list_filter_extra = ["naughtiness_category"]
 
     def process(self) -> None:
         """
@@ -93,7 +90,7 @@ class NaughtyChimpPurgeRequest(BasePurgeRequest):
         return anything, and any exceptions raised here will be logged
         automatically.
         """
-        purge_chimp(self.name, self.category)
+        purge_chimp(self.name, self.naughtiness_category)
 
     def custom_method(self) -> str:
         """
